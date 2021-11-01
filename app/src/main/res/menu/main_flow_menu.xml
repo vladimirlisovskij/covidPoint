@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_world_tab"
+        android:icon="@drawable/ic_world"
+        android:title="@string/main_flow_map_tab"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_list_tab"
+        android:icon="@drawable/ic_list"
+        android:title="@string/action_list_tab"
+        app:showAsAction="ifRoom" />
+</menu>

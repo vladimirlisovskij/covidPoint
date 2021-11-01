@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomProgressIndicator">
+        <attr name="progress_drawable" format="integer"/>
+        <attr name="progress_drawable_back" format="integer"/>
+    </declare-styleable>
+</resources>

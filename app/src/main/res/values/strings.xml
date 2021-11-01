@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Corona</string>
+    <string name="corona_map">Corona map</string>
+
+    <string name="corona_menu_action_update">Обновить</string>
+    <string name="progress_dialog_status" formatted="false">%1$d%%</string>
+    <string name="location_info_deaths">Смерти: %1$d</string>
+    <string name="location_info_confirmed">Подтверждения: %1$d</string>
+    <string name="location_info_recovered">Выздоровления: %1$d</string>
+    <string name="main_flow_map_tab">Карта</string>
+    <string name="action_list_tab">Список</string>
+</resources>
