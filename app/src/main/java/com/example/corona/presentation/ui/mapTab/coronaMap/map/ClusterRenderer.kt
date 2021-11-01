@@ -3,14 +3,15 @@ package com.example.corona.presentation.ui.mapTab.coronaMap.map
 import android.content.Context
 import android.graphics.Color
 import com.example.corona.R
+import com.example.corona.presentation.utils.createMarker
 import com.example.corona.presentation.utils.createRoundBitmap
-import com.example.corona.presentation.utils.getBitmapFromVectorDrawable
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
+
 
 class ClusterRenderer(
     private val context: Context,
@@ -46,15 +47,16 @@ class ClusterRenderer(
             position(item.position)
             icon(
                 BitmapDescriptorFactory.fromBitmap(
-                    context.getBitmapFromVectorDrawable(
-                        R.drawable.ic_marker,
-                        calculateRGB(item.confirmed)
+                    context.createMarker(
+                        "${item.confirmed}", R.drawable.ic_marker,
+                        14f, 90f, 76f, 30f, 10f, 66f, 66f
                     )
                 )
 
             )
         }
     }
+
 
     private fun calculateRGB(confirmed: Int): Int {
         val redColor = (255 * (confirmed / maxConfirmed.toDouble())).toInt()
