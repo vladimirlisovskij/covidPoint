@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.example.corona.databinding.ItemCountryInfoBinding
 import com.example.corona.presentation.model.dto.StatsInfoUiDto
+import com.example.corona.presentation.utils.animateGone
+import com.example.corona.presentation.utils.animateVisible
 
 class CoronaListAdapter : RecyclerView.Adapter<CoronaListAdapter.ViewHolder>() {
     var onClickListener: ((String) -> Unit) = { }
@@ -49,11 +53,15 @@ class CoronaListAdapter : RecyclerView.Adapter<CoronaListAdapter.ViewHolder>() {
                 closeIcon.setOnClickListener {
                     openCards.remove(index)
                     closeInfo()
+                    TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                 }
 
                 showMore.setOnClickListener {
                     openCards.add(index)
                     openInfo()
+                    TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
+                    root.animate()
+                        .translationY(0f)
                 }
 
                 countryInfoConfirmedName.text = data.name
@@ -85,17 +93,18 @@ class CoronaListAdapter : RecyclerView.Adapter<CoronaListAdapter.ViewHolder>() {
 
         private fun closeInfo() {
             with(binding) {
-                closeIcon.visibility = View.GONE
-                moreContainer.visibility = View.GONE
-                showMore.visibility = View.VISIBLE
+                closeIcon.animateGone()
+                moreContainer.animateGone()
+                showMore.animateVisible()
+
             }
         }
 
         private fun openInfo() {
             with(binding) {
-                closeIcon.visibility = View.VISIBLE
-                moreContainer.visibility = View.VISIBLE
-                showMore.visibility = View.GONE
+                closeIcon.animateVisible()
+                moreContainer.animateVisible()
+                showMore.animateGone()
             }
         }
     }

@@ -9,6 +9,8 @@ import com.example.corona.presentation.ui.listTab.coronaList.CoronaListAdapter
 import com.example.corona.presentation.ui.listTab.coronaList.CoronaListViewModel
 import com.example.corona.presentation.ui.main.MainViewModel
 import com.example.corona.presentation.ui.mapTab.coronaMap.CoronaViewModel
+import com.example.corona.presentation.ui.splash.SplashViewModel
+import com.example.corona.presentation.ui.tabs.TabsFlowViewModel
 import com.example.corona.presentation.utils.Constants
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
@@ -18,9 +20,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel {
-        MainViewModel(
-            updateLocationsCase = get()
-        )
+        MainViewModel()
     }
     viewModel {
         CoronaViewModel(
@@ -33,6 +33,10 @@ val viewModelModule = module {
             getLocationsStatsCase = get()
         )
     }
+    viewModel { SplashViewModel() }
+    viewModel { TabsFlowViewModel(
+        updateLocationsCase = get()
+    ) }
 }
 
 val adapterModule = module {

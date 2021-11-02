@@ -4,7 +4,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.corona.R
 import com.example.corona.databinding.FragmentCoronaListBinding
 import com.example.corona.presentation.base.view.BaseFragment
-import com.example.corona.presentation.ui.main.NavigateToMapInputEvent
+import com.example.corona.presentation.ui.tabs.NavigateToMapInputEvent
 import com.example.corona.presentation.ui.mapTab.coronaMap.MoveToLocation
 import com.example.corona.presentation.utils.collectOnStarted
 import org.koin.android.ext.android.inject

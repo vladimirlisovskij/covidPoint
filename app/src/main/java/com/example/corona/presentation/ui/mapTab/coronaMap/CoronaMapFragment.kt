@@ -1,7 +1,9 @@
 package com.example.corona.presentation.ui.mapTab.coronaMap
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.corona.R
@@ -15,10 +17,10 @@ import com.example.corona.presentation.utils.collectOnStarted
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
+import com.google.maps.android.ktx.awaitMapLoad
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -31,24 +33,46 @@ class CoronaMapFragment : BaseFragment(R.layout.fragment_corona_map) {
     private lateinit var clusterManager: ClusterManager<CoronaMarkerItem>
     private lateinit var clusterRenderer: ClusterRenderer
 
+    private val permissionCollector =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            if (it.all { (_, value) -> value }) viewModel.onPermissionsAccept()
+            else viewModel.onPermissionsDeny()
+        }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initMap()
+        checkPermissions()
+
+    }
+
+    override fun initListeners() {
+        super.initListeners()
+        with(binding) {
+            addZoom.setOnClickListener { viewModel.onAddZoom() }
+            removeZoom.setOnClickListener { viewModel.onRemoveZoom() }
+        }
     }
 
     override fun initObservers() {
         super.initObservers()
-
-        collectOnStarted(viewModel.screenEvents) {
-            onScreenEvent(it)
-        }
-
         collectOnStarted(eventFlow) {
             when (it) {
                 is MoveToLocation -> {
                     viewModel.onMoveToLocation(it.code)
                 }
             }
+        }
+
+        collectOnStarted(viewModel.screenEvents) {
+            onScreenEvent(it)
+        }
+
+        collectOnStarted(viewModel.zoom) {
+            mapFragment.awaitMap()
+            map.animateCamera(
+                CameraUpdateFactory.zoomTo(it.toFloat())
+            )
         }
     }
 
@@ -63,6 +87,14 @@ class CoronaMapFragment : BaseFragment(R.layout.fragment_corona_map) {
 
     private fun showLocationInfo(event: CoronaViewModel.ScreenEvents.ShowLocationInfoDialog) {
         LocationInfoDialog.newInstance(event.data).show(childFragmentManager, "123")
+    }
+
+    private fun checkPermissions() {
+        val permissions = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        )
+        permissionCollector.launch(permissions)
     }
 
 
@@ -81,6 +113,8 @@ class CoronaMapFragment : BaseFragment(R.layout.fragment_corona_map) {
                     clusterManager.renderer = clusterRenderer
                     setOnCameraIdleListener(clusterManager)
                     setOnMarkerClickListener(clusterManager)
+                    uiSettings.isZoomGesturesEnabled = false
+                    uiSettings.isRotateGesturesEnabled = false
                 }
 
             viewModel.locations.collect {

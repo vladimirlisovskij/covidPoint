@@ -7,11 +7,10 @@ import com.example.corona.domain.usecases.GetLocationsMarkersCase
 import com.example.corona.presentation.base.view.BaseViewModel
 import com.example.corona.presentation.model.dto.StatsInfoUiDto
 import com.example.corona.presentation.utils.toUi
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 
 class CoronaViewModel(
     private val getLocationsMarkersCase: GetLocationsMarkersCase,
@@ -21,6 +20,26 @@ class CoronaViewModel(
 
     private val _screenEvents = MutableSharedFlow<ScreenEvents>()
     val screenEvents = _screenEvents.asSharedFlow()
+
+    private val _zoom = MutableStateFlow(1)
+    val zoom = _zoom.asStateFlow()
+
+    fun onPermissionsAccept() {
+
+    }
+
+    fun onPermissionsDeny() {
+
+    }
+
+    fun onAddZoom() {
+        _zoom.value = min(_zoom.value + 1, 13)
+    }
+
+    fun onRemoveZoom() {
+        _zoom.value = max(_zoom.value - 1, 2)
+    }
+
 
     fun onMarkerClick(code: String) {
         viewModelScope.launch {

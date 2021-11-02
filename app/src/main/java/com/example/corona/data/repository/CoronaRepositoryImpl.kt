@@ -8,17 +8,16 @@ import com.example.corona.data.models.dto.LocationInfo
 import com.example.corona.data.models.dto.LocationMarkerDb
 import com.example.corona.data.models.urls.FlagUrlsModel
 import com.example.corona.data.utils.toDomain
+import com.example.corona.domain.exceptions.TimeOutException
 import com.example.corona.domain.model.dto.LocationMarkerInfoDto
 import com.example.corona.domain.model.dto.LocationStatInfoDto
 import com.example.corona.domain.repository.CoronaRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.net.SocketTimeoutException
 import kotlin.math.max
 
 class CoronaRepositoryImpl(
@@ -41,15 +40,19 @@ class CoronaRepositoryImpl(
     }
 
     override suspend fun updateDb() {
-        withContext(dispatcherIO) {
-            val response = coronaApi.getLocationsId()
-            response.body()?.locations?.let { list ->
-                val result = mutableListOf<LocationEntity>();
-                for (entity in createCountyChannel(this, list)) {
-                    result.add(entity)
+        try {
+            withContext(dispatcherIO) {
+                val response = coronaApi.getLocationsId()
+                response.body()?.locations?.let { list ->
+                    val result = mutableListOf<LocationEntity>();
+                    for (entity in createCountyChannel(this, list)) {
+                        result.add(entity)
+                    }
+                    coronaDAO.insertAllLocations(result)
                 }
-                coronaDAO.insertAllLocations(result)
             }
+        } catch (e: SocketTimeoutException) {
+            throw TimeOutException(e.message)
         }
     }
 
@@ -59,7 +62,10 @@ class CoronaRepositoryImpl(
         }
     }
 
-    private fun createCountyChannel(scope: CoroutineScope, locations: List<LocationIdInfo>): ReceiveChannel<LocationEntity> {
+    private fun createCountyChannel(
+        scope: CoroutineScope,
+        locations: List<LocationIdInfo>
+    ): ReceiveChannel<LocationEntity> {
         val fanOut = scope.produce { locations.distinctBy { it.countryCode }.forEach { send(it) } }
         return scope.produce {
             repeat(20) {

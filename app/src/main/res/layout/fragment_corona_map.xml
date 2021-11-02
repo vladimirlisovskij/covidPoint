@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/corona_map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/corona_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/btgFormType"
+        android:layout_width="41dp"
+        android:layout_height="81dp"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        app:elevation="110dp"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:checkedButton="@id/tab_map"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_buttons">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_zoom"
+            style="@style/ToolbarButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:icon="@drawable/ic_add"
+            app:iconTint="#666666" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/remove_zoom"
+            style="@style/ToolbarButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:icon="@drawable/ic_remove"
+            app:iconTint="#666666" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+</FrameLayout>
+
 
