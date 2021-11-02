@@ -92,14 +92,14 @@ class CoronaMapFragment : BaseFragment(R.layout.fragment_corona_map) {
     private fun plotMap(data: List<MarkerInfoUiDto>) {
         map.clear()
         clusterManager.clearItems()
-        clusterRenderer.maxConfirmed = data.sumOf { country -> country.confirmed }
+        clusterRenderer.maxConfirmed = data.sumOf { country -> country.confirmed[0] }
 
         clusterManager.let {
             data.forEach { location ->
                 it.addItem(
                     CoronaMarkerItem(
                         location.countryCode,
-                        location.confirmed,
+                        location.confirmed[0],
                         LatLng(location.lat, location.lon)
                     )
                 )

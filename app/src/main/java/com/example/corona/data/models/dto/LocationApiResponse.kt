@@ -22,7 +22,7 @@ data class LocationApiStatus(
 )
 
 
-data class LocationApiCoordinates(
-    val latitude: String,
-    val longitude: String,
-)
+//data class LocationApiCoordinates(
+//    val latitude: String,
+//    val longitude: String,
+//)

@@ -2,6 +2,7 @@ package com.example.corona.data.models.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.corona.data.models.dto.LocationEntity
 import com.example.corona.data.utils.Constants
 
@@ -9,6 +10,7 @@ import com.example.corona.data.utils.Constants
     version = Constants.DB_VERSION,
     entities = [LocationEntity::class]
 )
-abstract class CoronaDataBase: RoomDatabase(){
+@TypeConverters(Converter::class)
+abstract class CoronaDataBase : RoomDatabase() {
     abstract fun getCoronaDAO(): CoronaDAO
 }

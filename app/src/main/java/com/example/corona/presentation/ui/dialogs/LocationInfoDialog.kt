@@ -5,7 +5,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.corona.R
 import com.example.corona.databinding.DialogCountyInfoBinding
-import com.example.corona.databinding.DialogLocationInfoBinding
 import com.example.corona.presentation.base.dialog.BaseBottomSheetDialog
 import com.example.corona.presentation.model.dto.StatsInfoUiDto
 
@@ -19,19 +18,25 @@ class LocationInfoDialog : BaseBottomSheetDialog(R.layout.dialog_county_info) {
         data?.let {
             with(binding) {
                 countryInfoConfirmedName.text = it.name
-                
-                val sum = (it.confirmed + it.deaths + it.recovered).toDouble() / 100
 
-                confirmedInfo.countryInfoConfirmedCount.text = it.confirmed.toString()
-                confirmedInfo.progressBar.progress = (it.confirmed / sum).toInt()
+                val curConfirmed = it.confirmed[0]
+                val curRecovered = it.recovered[0]
+                val curDeath = it.deaths[0]
 
-                deathsInfo.countryInfoConfirmedCount.text = it.deaths.toString()
-                deathsInfo.progressBar.progress = (it.deaths / sum).toInt()
+                val sum = (curConfirmed + curDeath + curRecovered).toDouble() / 100  // todo
 
-                recoveredInfo.countryInfoConfirmedCount.text = it.recovered.toString()
-                recoveredInfo.progressBar.progress = (it.recovered / sum).toInt()
+                confirmedInfo.countryInfoConfirmedCount.text = curConfirmed.toString()
+                confirmedInfo.progressBar.progress = (curConfirmed / sum).toInt()
+
+                deathsInfo.countryInfoConfirmedCount.text = curDeath.toString()
+                deathsInfo.progressBar.progress = (curDeath / sum).toInt()
+
+                recoveredInfo.countryInfoConfirmedCount.text = curRecovered.toString()
+                recoveredInfo.progressBar.progress = (curRecovered / sum).toInt()
 
                 Glide.with(countyFlag).load(it.flagUrl).centerCrop().into(countyFlag)
+
+                progressGraph.countyInfoGraph.data = it.confirmed
             }
         }
     }

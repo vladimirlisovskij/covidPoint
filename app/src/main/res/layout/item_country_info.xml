@@ -17,8 +17,8 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="19dp"
             android:id="@+id/close_icon"
+            android:layout_width="19dp"
             android:layout_height="19dp"
             android:layout_gravity="end"
             android:layout_marginBottom="20dp"
@@ -48,8 +48,8 @@
             <TextView
                 android:id="@+id/country_info_confirmed_name"
                 android:layout_width="0dp"
-                android:layout_marginEnd="16dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:textColor="#000000"
                 android:textSize="24dp"
                 android:textStyle="bold"
@@ -76,7 +76,8 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/confirmed_info">
+                app:layout_constraintTop_toBottomOf="@id/confirmed_info"
+                tools:visibility="visible">
 
                 <include
                     android:id="@+id/deaths_info"
@@ -88,6 +89,13 @@
                 <include
                     android:id="@+id/recovered_info"
                     layout="@layout/view_progress_recovered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp" />
+
+                <include
+                    android:id="@+id/progress_graph"
+                    layout="@layout/view_statistic_progress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp" />

@@ -64,6 +64,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp" />
 
+        <include
+            android:id="@+id/progress_graph"
+            layout="@layout/view_statistic_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

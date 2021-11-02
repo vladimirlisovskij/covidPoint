@@ -1,5 +1,6 @@
 package com.example.corona.presentation.ui.listTab.coronaList
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,18 +58,24 @@ class CoronaListAdapter : RecyclerView.Adapter<CoronaListAdapter.ViewHolder>() {
 
                 countryInfoConfirmedName.text = data.name
 
-                val sum = (data.confirmed + data.deaths + data.recovered).toDouble() / 100  // todo
+                val curConfirmed = data.confirmed[0]
+                val curRecovered = data.recovered[0]
+                val curDeath = data.deaths[0]
 
-                confirmedInfo.countryInfoConfirmedCount.text = data.confirmed.toString()
-                confirmedInfo.progressBar.progress = (data.confirmed / sum).toInt()
+                val sum = (curConfirmed + curDeath + curRecovered).toDouble() / 100  // todo
 
-                deathsInfo.countryInfoConfirmedCount.text = data.deaths.toString()
-                deathsInfo.progressBar.progress = (data.deaths / sum).toInt()
+                confirmedInfo.countryInfoConfirmedCount.text = curConfirmed.toString()
+                confirmedInfo.progressBar.progress = (curConfirmed / sum).toInt()
 
-                recoveredInfo.countryInfoConfirmedCount.text = data.recovered.toString()
-                recoveredInfo.progressBar.progress = (data.recovered / sum).toInt()
+                deathsInfo.countryInfoConfirmedCount.text = curDeath.toString()
+                deathsInfo.progressBar.progress = (curDeath / sum).toInt()
+
+                recoveredInfo.countryInfoConfirmedCount.text = curRecovered.toString()
+                recoveredInfo.progressBar.progress = (curRecovered / sum).toInt()
 
                 Glide.with(countyFlag).load(data.flagUrl).centerCrop().into(countyFlag)
+
+                progressGraph.countyInfoGraph.data = data.confirmed
 
                 countyFlag.setOnClickListener {
                     onClickListener(data.countryCode)

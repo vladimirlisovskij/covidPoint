@@ -2,7 +2,6 @@ package com.example.corona.presentation.ui.main
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.corona.R
 import com.example.corona.databinding.ActivityMainBinding
